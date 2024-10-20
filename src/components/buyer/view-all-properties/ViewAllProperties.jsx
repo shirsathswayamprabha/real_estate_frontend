@@ -5,6 +5,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 function ViewAllProperties() {
     const [propertyData, setPropertyData] = useState([]);
+     const [searchQuery, setSearchQuery] = useState("");
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [bookmarkedProperties, setBookmarkedProperties] = useState({});
     useEffect(() => {
