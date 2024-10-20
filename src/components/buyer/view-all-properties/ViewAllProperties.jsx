@@ -60,11 +60,11 @@ function ViewAllProperties() {
 
     };
 
-    const handleBookmarkClick = async (propertyId) => {
+      const handleBookmarkClick = async (propertyId) => {
         const newBookmarkedProperties = { ...bookmarkedProperties };
         const isCurrentlyBookmarked = newBookmarkedProperties[propertyId] || false;
 
-        // Toggle bookmark state for the specific property
+        // Temporarily update UI before server response (optimistic update)
         newBookmarkedProperties[propertyId] = !isCurrentlyBookmarked;
         setBookmarkedProperties(newBookmarkedProperties);
 
@@ -73,25 +73,31 @@ function ViewAllProperties() {
             const response = await fetch(`http://localhost:8088/api/properties/bookmarked?userId=${userId}&propertyId=${propertyId}&status=Bookmarked`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-             
             });
 
             const data = await response.json();
-            console.log(data);
-            if(response.ok){
+            if (response.ok) {
                 alert(data.message);
-            }
-            else if (!response.ok) {
-                alert("Error bookmarking the property");
+            } else {
+                // Revert bookmark UI on failure
+                newBookmarkedProperties[propertyId] = isCurrentlyBookmarked;
+                setBookmarkedProperties(newBookmarkedProperties);
+                alert(data.message || "Error bookmarking the property");
             }
         } catch (error) {
+            // Revert bookmark UI on failure
+            newBookmarkedProperties[propertyId] = isCurrentlyBookmarked;
+            setBookmarkedProperties(newBookmarkedProperties);
             alert('Error sending bookmark request');
         }
     };
 
-    const filteredProperties = propertyData.filter(property =>
+      const filteredProperties = propertyData.map(property => ({
+        ...property,
+        isBookmarked: !!bookmarkedProperties[property.id],  // Add bookmark status directly to the property data
+    })).filter(property =>
         (property.city || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
     return (
