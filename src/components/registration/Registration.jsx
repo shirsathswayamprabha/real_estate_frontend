@@ -78,10 +78,10 @@ const Registration = () => {
             const data = await response.json();
 
             if (response.status === 409) {
-                setMessage(data.message);
+                alert(data.message);
             }
             else if (response.ok) {
-                setMessage(data.message);
+                alert(data.message);
                 // Clear form fields
                 setUsername('');
                 setEmail('');
@@ -93,11 +93,11 @@ const Registration = () => {
                 setErrors({});
             }
             else {
-                setMessage('Registration Failed');
+                alert('Registration Failed');
             }
 
         } catch (error) {
-            setMessage('An error occurred');
+            alert('An error occurred');
         }
 
     };
