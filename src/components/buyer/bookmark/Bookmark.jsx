@@ -23,7 +23,7 @@ function Bookmark() {
                 }
 
             } catch (error) {
-                setError('Error fetching agents:', error);
+                alert('Error fetching agents:', error);
             }
         };
         fetchBookmarkedPropertyDetails();
