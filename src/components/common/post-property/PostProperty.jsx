@@ -22,7 +22,7 @@ const PropertyForm = () => {
     });
 
    
-    const [userId, setUserId] = useState('');
+
     const [images, setImages] = useState([]);
     const [message, setMessage] = useState('');
     //   const [property, setProperty] = useState(null); // To hold the response with property data
@@ -42,8 +42,8 @@ const PropertyForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const id = localStorage.getItem("userId");
-        setUserId(id);
+        const userId = localStorage.getItem("userId");
+  
         // Create FormData to append all fields and images
         const formData = new FormData();
         
